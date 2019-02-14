@@ -257,14 +257,14 @@ print('Generator''s total number of parameters = ' + str(total_parameters))
 # get descriptor network
 # 'max' used in the paper
 # 'avg' recommended
-vgg = VGG(pool='max', pad=1)
+vgg_net = VGG(pool='max', pad=1)
 
 
 # Change this to your model directory!
-vgg.load_state_dict(torch.load('./../pytorch-image-synthesis-labs/Models/vgg_conv.pth'))
-for param in vgg.parameters():
+vgg_net.load_state_dict(torch.load('./../pytorch-image-synthesis-labs/Models/vgg_net_conv.pth'))
+for param in vgg_net.parameters():
     param.requires_grad = False
-vgg.cuda()
+vgg_net.cuda()
 
 input_name = 'peppers.jpg'
 
@@ -288,8 +288,8 @@ if disp:
     display.image(img_disp, win='input',title='Input texture')
 
 #define layers, loss functions, weights and compute optimization target
-loss_layers = ['r11', 'r21', 'r31', 'r41', 'r51']
-loss_fns = [GramMSELoss()] * len(loss_layers)
+out_keys = ['r11', 'r21', 'r31', 'r41', 'r51']
+loss_fns = [GramMSELoss()] * len(out_keys)
 loss_fns = [loss_fn.cuda() for loss_fn in loss_fns]
 # these are the weights settings recommended by Gatys
 # to use with Gatys' normalization:
@@ -297,9 +297,7 @@ loss_fns = [loss_fn.cuda() for loss_fn in loss_fns]
 w = [1,1,1,1,1]
 
 #compute optimization targets
-targets = [GramMatrix()(f).detach() for f in vgg(input_torch, loss_layers)]
-
-
+targets = [GramMatrix()(f).detach() for f in vgg_net(input_torch, out_keys)]
 
 
 # training parameters
@@ -328,17 +326,22 @@ for n_iter in range(max_iter):
         zk = [torch.rand(1,n_input_ch,int(szk),int(szk)) for szk in sz]
         z_samples = [Variable(z.cuda()) for z in zk ]
         
-        # Exercise 4: generate images with z_samples, then compute loss
-        # hint: Loss will look like vgg(..,loss_layers), see vgg definition above
-        # R
-        batch_sample=0 # output of generator with z_samples
-        sample = batch_sample[0,:,:,:].unsqueeze(0)
-        out = 0 # loss, hint: vgg(...,loss_layers), see inputs for VGG above
+        # EXERCISE 4.1: COMPLETE THIS LINE:
+        #batch_sample= ?
         
-        if use_GN:
-            losses = [w[a]*loss_fns[a](I(f), targets[a]) for a,f in enumerate(out)]
-        else:
-            losses = [w[a]*loss_fns[a](f, targets[a]) for a,f in enumerate(out)]
+        sample = batch_sample[0,:,:,:].unsqueeze(0)
+        
+        # EXERCISE 4.2: COMPLETE THIS LINE:
+        # Compute the VGG activations
+        # out = vgg_net(..)
+        
+        
+        # EXERCISE 4.3: COMPLETE THIS LINE:
+#        gram_loss = GramMSELoss()
+#        norm_layer = I = Normalize_gradients.apply
+#        losses = [gram_loss(I(), targets[]) for ...]
+        
+        
         single_loss = (1/(batch_size))*sum(losses)
         single_loss.backward(retain_graph=False)
         loss_history[n_iter] = loss_history[n_iter] + single_loss.item()
