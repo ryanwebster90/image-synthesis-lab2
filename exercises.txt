@@ -53,13 +53,15 @@ The nn.AdaptiveAvgPool2d( (height,width) ) will automatically resize the spatial
 
 - What is the difference between (a) and (b)? Save images in Exercise3/ to provide evidence.
 
-- What happens when we use too many scales (c)? Why? 
+- What happens when we use too many scales (c)? Why?
 
 
 Exercise 4:
 
 - Complete lines 330-336 of train_g2d_periodic.py
-- Compute the network for 500 iterations, save the final output sample in exercise4/
+
+
+- Compute the network for 500 iterations, save a single output sample in Exercise4/
 
 Exercise5:
 
@@ -69,7 +71,7 @@ Exercise5:
 
 **** Extra credit *****
 
-- Modify the network definition in train_g2d_periodic.py, retrain the network then compare results
+- Modify the generator (Pyramid2D) definition in train_g2d_periodic.py, retrain the network then compare results
 
 	- Replace ReLU with another nonlinearity (e.g. ELU), then retrain network
 	- Replace GramMatrix loss function with another loss that makes sense for textures
