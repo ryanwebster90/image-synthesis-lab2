@@ -1,0 +1,87 @@
+
+Place printed output under each exercise. Save images with directory structure:
+
+Exercise1/
+Exercise2/
+...
+
+Then, include all your answers below, together with output images, zip and email me at:
+
+ryan.webster@unicaen.fr
+
+
+Exercise 1-3 use texture_synthesis_multiscale.py
+Exercise 4-5 use train_g2d_periodic and sample_g2d_periodic.py respectively
+
+Exercise 1:
+
+- Print the output sizes of the feature layers of vgg-19.
+
+
+- Also print the dimensions of the gram matrices. What does this imply about the input image size (i.e. Does the input image have to be the same size as the synthesis?)
+
+
+
+
+Exercise 2:
+
+- Synthesize bones and raddish image using different layers, refered to as out_keys in the code.
+
+(a) using up to r51 (i.e. r11,r21,...)
+(b) using up to r31
+(c) using only r51
+* NOTE you may have to modify loss_alpha to be smaller when you only use
+
+- Save final synthesis images in Exercise2 folder. 
+
+What is the effect of using deeper layers? Why?
+
+
+
+
+Exercise 3:
+The nn.AdaptiveAvgPool2d( (height,width) ) will automatically resize the spatial dimension of a layer to (height,width), using average pooling for downsampling and nearest neighbor interpolation for upsampling. 
+
+- Compute resolutions (line 68)
+
+- Define scale_layer
+
+- Synthesize bones.jpg with
+(a) N_scales = 1
+(b) N_scales = 3
+(c) raddish.jpg with N_scales = 4
+
+- What is the difference between (a) and (b)? Save images in Exercise3/ to provide evidence.
+
+- What happens when we use too many scales (c)? Why? 
+
+
+Exercise 4:
+
+- Complete lines 330-336 of train_g2d_periodic.py
+- Compute the network for 500 iterations, save the final output sample in exercise4/
+
+Exercise5:
+
+- Compute a larger sample of your network
+
+- Interpolate two samples z_0, z_1, save intermediate outputs
+
+**** Extra credit *****
+
+- Modify the network definition in train_g2d_periodic.py, retrain the network then compare results
+
+	- Replace ReLU with another nonlinearity (e.g. ELU), then retrain network
+	- Replace GramMatrix loss function with another loss that makes sense for textures
+		(e.g. pooling to 1 spatial dimension), then retrain the network
+		
+	
+		
+	
+	
+
+
+
+
+
+
